@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Feedback Form</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+
+<body>
+<div class="feedback-container">
+    <h2 style="text-align: center;">Feedback Form</h2>
+
+    <form id="feedbackForm" action="/thankyou" method="GET">
+    <div class="form-group">
+        <label for="fbName">Your Name</label>
+        <input type="text" id="fbName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="fbEmail">Your Email</label>
+        <input type="email" id="fbEmail" required />
+    </div>
+
+    <div class="form-group">
+        <label for="fbMessage">Your Feedback</label>
+        <textarea id="fbMessage" rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn primary">Submit</button>
+    <button type="button" onclick="window.history.back()" class="btn">Back</button>
+
+
+    <p id="feedbackStatus" class="feedback-status"></p>
+    </form>
+</div>
+
+<script src="/static/js/main.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+body{font-family:Inter, 'Segoe UI', Arial, helvetica, sans-serif;background:#f5f8fb;color:#1f2937;margin:0;padding:0}
+.container{max-width:920px;margin:24px auto;padding:18px;background:transparent;border-radius:8px}
+h1{margin-top:0}
+#intro-form label{display:block;margin:10px 0}
+#intro-form input[type=text],#intro-form select{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px;background:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+.btn.primary{background:linear-gradient(90deg,#1976d2,#0b63b5);color:#fff;box-shadow:0 8px 20px rgba(11,99,181,0.12)}
+.btn.ghost{background:transparent;border:1px solid rgba(11,99,181,0.12);color:#0b63b5}
+.hidden{display:none}
+#questionBox{margin:18px 0;padding:12px;border-radius:6px;background:#f1f5fb}
+.choices button{margin-right:10px;background:#2e7d32}
+#progress{font-size:14px;color:#666}
+#result p{margin:6px 0}
+
+.mbti-info{background:linear-gradient(180deg,#eaf6ff,#ffffff);border-left:4px solid #0b63b5;padding:14px;border-radius:8px;margin-bottom:16px;color:#0b2540}
+
+.site-header{background:#fff;border-bottom:1px solid #e6eef8}
+.header-inner{max-width:920px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:700;color:#0b63b5;font-size:20px}
+.logo .dot{color:#1976d2}
+.brand-wrap{display:flex;align-items:center;gap:10px}
+.site-logo{width:46px;height:46px;border-radius:50%;object-fit:cover;box-shadow:0 6px 18px rgba(11,99,181,0.12)}
+.brand-wrap .logo{font-size:18px}
+.top-nav{display:flex;gap:10px}
+.top-nav a{padding:8px 12px;color:#0b63b5;border-radius:8px;text-decoration:none;font-weight:600}
+.top-nav a:hover{background:#eef6ff}
+.section-card{padding:12px;border:1px solid #ddd;border-radius:6px;margin-bottom:12px;background:#fafafa}
+
+/* Collapsible details with smooth fade/height transition */
+.details{overflow:hidden;transition:max-height 280ms ease,opacity 280ms ease,padding 200ms ease;opacity:1;max-height:1000px;padding-top:8px;padding-bottom:8px}
+.details.collapsed{
+	max-height:0;
+	opacity:0;
+	padding-top:0;
+	padding-bottom:0;
+}
+.details.show{ /* explicit show state */
+	max-height:1000px;
+	opacity:1;
+	padding-top:8px;
+	padding-bottom:8px;
+}
+
+/* Footer social icons */
+.site-footer{margin-top:20px}
+.site-footer .container{max-width:760px;margin:0 auto;padding:12px}
+.social-icons{display:flex;gap:12px;justify-content:center;align-items:center}
+.social-icons a{display:inline-flex;width:40px;height:40px;border-radius:8px;align-items:center;justify-content:center;background:transparent;text-decoration:none}
+.social-icons svg{width:22px;height:22px}
+.social-icons a:hover svg path, .social-icons a:hover svg rect, .social-icons a:hover svg circle{stroke:#0b57a4;fill:#0b57a4}
+
+/* Hero */
+.hero{background:linear-gradient(90deg,#f7fbff 0%,#eef6ff 100%);padding:40px 0}
+.hero-inner{max-width:920px;margin:0 auto;padding:0 18px;display:flex;gap:28px;align-items:center;justify-content:space-between}
+.hero h1{font-size:28px;margin:0;color:#07263b}
+.lead{color:#1f4b66;margin-top:8px;margin-bottom:16px}
+.hero-cta .btn{margin-right:10px}
+.main-card{padding:22px;background:transparent}
+.card{background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,0.06);padding:18px;margin-bottom:16px}
+.card-form h2{margin-top:0;margin-bottom:8px}
+.choices button{margin-right:10px;background:linear-gradient(90deg,#0b63b5,#1976d2);color:#fff;padding:10px 16px;border-radius:8px;border:0}
+.form-actions{margin-top:14px}
+
+@media (max-width:720px){
+	.hero-inner{flex-direction:column;align-items:flex-start}
+	.hero-illustration{display:none}
+	.hero h1{font-size:22px}
+}
+
+.contact-card {
+    margin-top: 30px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.contact-item {
+    background: #f7fbff;
+    border: 1px solid #e6eef8;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+@media (max-width: 720px) {
+    .contact-grid {
+    grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d9e6f2;
+    outline: none;
+    font-size: 14px;
+}
+
+.feedback-status {
+    margin-top: 10px;
+    font-weight: 600;
+}
+.feedback-status.success {
+    color: #2e7d32;
+}
+
+/* ===== Thank You Page UI ===== */
+.thank-container{
+    max-width: 920px;
+    margin: 24px auto;
+    padding: 18px;
+    background: skyblue;
+    border-radius: 8px;
+    color: #000;
+}
+
+.thankyou-card{
+    max-width: 520px;
+    margin: 80px auto;
+    text-align: center;
+    padding: 30px 22px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #ffffff, #f7fbff);
+}
+
+.thankyou-icon{
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 34px;
+    background: #e9f9ef;
+    border: 1px solid #c7f1d2;
+}
+
+.thankyou-title{
+    margin: 0;
+    font-size: 28px;
+    color: #07263b;
+}
+
+.thankyou-subtitle{
+    margin-top: 8px;
+    margin-bottom: 18px;
+    color: #1f4b66;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.thankyou-actions{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.feedback-container {
+
+    background:rgb(108, 122, 141);
+    justify-content: center;
+    max-width: 800px;
+    margin: 90px auto;
+    height: 400px;
+    box-shadow: 2px solid #000;
+}
+
+.h2 {
+    color: #000;
+    text-align: center;
+}

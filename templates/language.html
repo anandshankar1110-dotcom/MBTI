@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Choose Language</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+    <div class="container">
+    <h1>Choose Language</h1>
+    <div class="section-card">
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="hi">हिन्दी (Hindi)</button>
+        <button class="lang-btn" data-lang="fr">Français (French)</button>
+        <button class="lang-btn" data-lang="ru">Русский (Russian)</button>
+    </div>
+    </div>
+    <script>
+    document.querySelectorAll('.lang-btn').forEach(b=>{
+        b.addEventListener('click', ()=>{
+        const lang = b.getAttribute('data-lang')
+        localStorage.setItem('mbti_lang', lang)
+          // go back to home
+        window.location.href = '/'
+        })
+    })
+    </script>
+</body>
+</html>
