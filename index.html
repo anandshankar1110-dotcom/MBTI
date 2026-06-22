@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MBTI Test</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-wrap">
+          <img id="siteLogo" src="/static/anand.jpg" alt="logo" class="site-logo" onerror="this.onerror=null; this.src='/static/anand.jpg';" />
+          <div class="logo">MBTI<span class="dot">.</span></div>
+        </div>
+        <nav class="top-nav">
+          <a href="#home">HOME</a> 
+          <a href="#personality type">Personality</a>
+          <a href="/language" class="primary btn">Language</a>
+          <a href="#about">about</a>
+          <a href="#contact" class="btn small primary">contact us</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <div>
+            <h1>Discover Your MBTI Personality</h1>
+            <p class="lead">Quick, friendly and private — get a concise MBTI-style report with career suggestions and a downloadable PDF.</p>
+            <div class="hero-cta">
+              <a class="btn primary" href="#intro-form">Start Now</a>
+              <a class="btn ghost" href="#language">Choose Language</a>
+            </div>
+          </div>
+          <div class="hero-illustration" aria-hidden="true">
+            <!-- subtle circle illustration -->
+            <svg width="220" height="140" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="110" cy="70" r="70" fill="#e6f7ff" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <div class="container main-card">
+        <div id="about" class="mbti-info">
+          The Myers-Briggs Type Indicator (MBTI) is a personality framework that categorizes individuals into 16 types based on preferences in four dimensions: Extraversion–Introversion, Sensing–Intuition, Thinking–Feeling, and Judging–Perceiving. It helps people understand their natural strengths, communication styles, decision-making approaches, and work preferences.
+        </div>
+
+        <section id="intro-form" class="card card-form">
+          <h2>Start the Test</h2>
+          <label>Name: <input id="name" type="text" /></label>
+          <label>DOB (DD-MM-YYYY): <input id="dob" type="text" placeholder="01-01-2000" /></label>
+          <label>Gender: 
+            <select id="gender">
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <div class="form-actions">
+            <button id="startBtn" class="btn primary">Start Test</button>
+          </div>
+        </section>
+
+        <section id="test" class="card hidden">
+          <div id="progress">Question <span id="qnum">0</span> / <span id="total">0</span></div>
+          <div id="questionBox"></div>
+          <div class="choices">
+            <button id="btnA">A</button>
+            <button id="btnB">B</button>
+          </div>
+        </section>
+
+        <section id="result" class="card hidden">
+          <h2>Result</h2>
+          <p><strong>Name:</strong> <span id="rname"></span></p>
+          <p><strong>Personality Type:</strong> <span id="ptype"></span></p>
+          <p><strong>Confidence:</strong> <span id="conf"></span>%</p>
+          <p><strong>Suggested Careers:</strong> <span id="career"></span></p>
+        </section>
+      </div>
+
+    </main>
+
+    <script id="questions-data" type="application/json">
+      {{ questions|tojson }}
+    </script>
+    <!--<script src="/static/js/main.js"></script>-->
+    <script>
+      // hide text label when logo image loads, keep text if image missing
+      (function(){
+        const img = document.getElementById('siteLogo')
+        const label = document.querySelector('.brand-wrap .logo')
+        if(!img) return
+        img.addEventListener('load', ()=>{
+          if(label) label.style.display = 'none'
+        })
+        img.addEventListener('error', ()=>{
+          if(label) label.style.display = 'block'
+        })
+      })()
+    </script>
+
+
+    <!-- CONTACT SECTION -->
+<section id="contact" class="container card contact-card">
+  <h2><b>Contact Us</b></h2> <!--some change had been done -->
+
+  <div class="contact-grid">
+    <div class="contact-item">
+      <strong>📧 Email:</strong>
+      <span>anandshankar612@gmail.com</span>
+    </div>
+
+    <div class="contact-item">
+      <strong>📞 Phone:</strong>
+      <span>+91 8540865670</span>
+    </div>
+
+    <div class="contact-item">
+      <strong>📍 Address:</strong>
+      <span>Bhopal, India</span>
+    </div>
+
+    <div class="contact-item">
+      <strong>🕒 Working Hours:</strong>
+      <span>Mon - Sat : 10 AM - 7 PM</span>
+    </div>
+
+    <div style="margin-top: 15px;">
+    <a href="/feedback" class="btn primary">Feedback</a>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+
+  </div>
+</section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="social-icons">
+          <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram" rel="noopener">
+            <!-- Instagram SVG -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="18" height="18" rx="5" stroke="#1976d2" stroke-width="1.2" fill="none"/>
+              <circle cx="12" cy="12" r="3.2" stroke="#1976d2" stroke-width="1.2" fill="none"/>
+              <circle cx="17.5" cy="6.5" r="0.6" fill="#1976d2" />
+            </svg>
+          </a>
+          <a href="https://x.com/" target="_blank" aria-label="X" rel="noopener">
+            <!-- X (Twitter) SVG -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 7.5c-.5.2-1 .3-1.6.4.6-.4 1-1 1.2-1.7-.6.4-1.3.7-2 .8C16.9 6 16 5.5 15 5.5c-1.8 0-3.2 1.5-3.2 3.3 0 .3 0 .6.1.9-2.7-.1-5.2-1.4-6.8-3.3-.3.6-.4 1.2-.4 1.9 0 1.2.6 2.3 1.6 2.9-.5 0-1-.2-1.4-.4v.1c0 1.8 1.2 3.3 2.9 3.7-.3.1-.7.1-1 .1-.3 0-.6 0-.9-.1.6 1.9 2.4 3.3 4.5 3.3-1.6 1.3-3.6 2-5.8 2-.4 0-.8 0-1.1-.1 2.1 1.4 4.6 2.2 7.3 2.2 8.7 0 13.4-7.2 13.4-13.4v-.6c.9-.7 1.6-1.5 2.2-2.4-.8.4-1.6.6-2.5.7z" fill="#1976d2"/>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn" rel="noopener">
+            <!-- LinkedIn SVG -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="2" stroke="#1976d2" stroke-width="1.2" fill="none"/>
+              <path d="M6.5 9.5h2.8V18H6.5zM8.9 6.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.8 9.5h2.6v1.2h.04c.36-.68 1.25-1.4 2.57-1.4 2.75 0 3.26 1.81 3.26 4.16V18h-2.8v-3.26c0-.78 0-1.78-1.08-1.78-1.08 0-1.24.84-1.24 1.72V18h-2.8V9.5z" fill="#1976d2"/>
+            </svg>
+          </a>
+          <a href="https://www.youtube.com/" target="_blank" aria-label="YouTube" rel="noopener">
+            <!-- YouTube SVG -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 8s-.2-1.6-.8-2.3c-.8-1-1.7-1-2.1-1.1C15.7 4 12 4 12 4h0s-3.7 0-6.9.6c-.4.1-1.3.1-2.1 1.1C2.2 6.4 2 8 2 8S2 9.8 2 11.6v.8C2 14.2 2.2 16 2.2 16s.2 1.6.8 2.3c.8 1 1.9 1 2.4 1.1 1.8.2 7.4.6 7.4.6s3.7 0 6.9-.6c.4-.1 1.3-.1 2.1-1.1.6-.7.8-2.3.8-2.3s.2-1.8.2-3.6v-.8C22 9.8 22 8 22 8z" stroke="#1976d2" stroke-width="0.6" fill="none"/>
+              <path d="M10 14l5-2-5-2v4z" fill="#1976d2"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
