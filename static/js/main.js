@@ -1,38 +1,158 @@
 // load QUESTIONS from JSON blob inserted by the template
-const QUESTIONS = JSON.parse(document.getElementById('questions-data').textContent || '[]')
+const QUESTIONS = JSON.parse(document.getElementById('questions-data')?.textContent || '[]')
 
 let current = 0
 let answers = []
 const total = QUESTIONS.length
 const totalEl = document.getElementById('total')
-if (totalEl) totalEl.innerText = total
-
-const startBtn = document.getElementById('startBtn')
-const testDiv = document.getElementById('test')
-// updated id in template: intro-form
-const intro = document.getElementById('intro-form') || document.getElementById('intro')
 const qnum = document.getElementById('qnum')
 const questionBox = document.getElementById('questionBox')
+const startBtn = document.getElementById('startBtn')
+const testDiv = document.getElementById('test')
+const introForm = document.getElementById('intro-form')
+const resultDiv = document.getElementById('result')
+const resultLinks = document.getElementById('resultLinks')
 const btnA = document.getElementById('btnA')
 const btnB = document.getElementById('btnB')
 
+if (totalEl) {
+  totalEl.innerText = total
+}
+
 if (startBtn) {
-  startBtn.addEventListener('click', ()=>{
-  const name = document.getElementById('name').value.trim()
-  if(!name || name.length<2){alert('Enter a valid name');return}
-    // guard for missing elements
-    if (intro) intro.classList.add('hidden')
+  startBtn.addEventListener('click', () => {
+    const name = document.getElementById('name')?.value.trim() || ''
+    const dob = document.getElementById('dob')?.value.trim() || ''
+    const gender = document.getElementById('gender')?.value || ''
+
+    if (name.length < 2) {
+      alert('Please enter your name.')
+      return
+    }
+    if (!dob) {
+      alert('Please enter your date of birth.')
+      return
+    }
+    if (!gender) {
+      alert('Please select your gender.')
+      return
+    }
+
+    if (introForm) introForm.classList.add('hidden')
     if (testDiv) testDiv.classList.remove('hidden')
-  showQuestion()
+    answers = []
+    current = 0
+    showQuestion()
   })
 } else {
   console.warn('Start button not found in DOM')
 }
 
-function showQuestion(){
-  qnum.innerText = current+1
+function showQuestion() {
+  if (!questionBox || !qnum) return
+
+  qnum.innerText = current + 1
   const q = QUESTIONS[current]
-  questionBox.innerHTML = `<strong>${q[0]}</strong><div style="margin-top:8px">A. ${q[1]}<br>B. ${q[2]}</div>`
+  if (!q) {
+    questionBox.innerText = 'No question available.'
+    return
+  }
+
+  questionBox.innerHTML = `
+    <strong>${q[0]}</strong>
+    <div style="margin-top:12px">
+      <div><strong>A:</strong> ${q[1]}</div>
+      <div style="margin-top:8px"><strong>B:</strong> ${q[2]}</div>
+    </div>
+  `
+}
+
+function recordAndNext(choice) {
+  answers.push(choice)
+  current++
+  if (current >= total) {
+    submitAnswers()
+  } else {
+    showQuestion()
+  }
+}
+
+if (btnA) {
+  btnA.addEventListener('click', () => recordAndNext('a'))
+}
+if (btnB) {
+  btnB.addEventListener('click', () => recordAndNext('b'))
+}
+
+async function submitAnswers() {
+  const name = document.getElementById('name')?.value.trim() || ''
+  const dob = document.getElementById('dob')?.value.trim() || ''
+  const gender = document.getElementById('gender')?.value || ''
+
+  const payload = { name, dob, gender, answers }
+  const res = await fetch('/api/assess', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+
+  if (!res.ok) {
+    const txt = await res.text()
+    alert('Error: ' + txt)
+    return
+  }
+
+  const data = await res.json()
+  showResult(data)
+}
+
+function showResult(data) {
+  document.getElementById('rname').innerText = data.name || ''
+  document.getElementById('ptype').innerText = data.pcode || ''
+  document.getElementById('conf').innerText = data.confidence || ''
+  document.getElementById('career').innerText = data.career || ''
+
+  if (testDiv) testDiv.classList.add('hidden')
+  if (resultDiv) resultDiv.classList.remove('hidden')
+  if (resultLinks) resultLinks.innerHTML = ''
+
+  if (data.pdf) {
+    const byteCharacters = atob(data.pdf)
+    const byteNumbers = new Array(byteCharacters.length)
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i)
+    }
+    const byteArray = new Uint8Array(byteNumbers)
+    const blob = new Blob([byteArray], { type: 'application/pdf' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = data.pdf_filename || 'MBTI_Report.pdf'
+    link.innerText = 'Download PDF report'
+    link.className = 'btn primary'
+    link.style.display = 'inline-block'
+    link.style.marginTop = '10px'
+    if (resultLinks) resultLinks.appendChild(link)
+  }
+
+  if (data.serial) {
+    const s = document.createElement('div')
+    s.innerText = 'Report Serial: ' + data.serial
+    s.style.marginTop = '10px'
+    if (resultLinks) resultLinks.appendChild(s)
+  }
+
+  if (data.report_url) {
+    const rlink = document.createElement('a')
+    rlink.href = data.report_url
+    rlink.innerText = 'Open report (via QR/link)'
+    rlink.target = '_blank'
+    rlink.className = 'btn ghost'
+    rlink.style.display = 'inline-block'
+    rlink.style.marginTop = '10px'
+    rlink.style.marginLeft = '12px'
+    if (resultLinks) resultLinks.appendChild(rlink)
+  }
 }
 
 // top-nav behavior: reveal sections and contact details only when clicked
@@ -46,10 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.querySelector(href)
       if (!target) return
 
-      // If target has .details that are hidden (like contact), reveal them
       const details = target.querySelector('.details')
       if (details) {
-        // toggle collapsed/show classes for animated reveal/hide
         if (details.classList.contains('collapsed')) {
           details.classList.remove('collapsed')
           details.classList.add('show')
@@ -61,118 +179,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Smooth scroll to section
-      target.scrollIntoView({behavior: 'smooth', block: 'start'})
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
     })
   })
 })
 
-function recordAndNext(choice){
-  answers.push(choice)
-  current++
-  if(current>=total){
-    submitAnswers()
-  } else {
-    showQuestion()
-  }
-}
+document.querySelectorAll('.lang-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    const lang = b.getAttribute('data-lang')
+    localStorage.setItem('mbti_lang', lang)
+    window.location.href = '/'
+  })
+})
 
-btnA.addEventListener('click', ()=>recordAndNext('a'))
-btnB.addEventListener('click', ()=>recordAndNext('b'))
-
-async function submitAnswers(){
-  const payload = {
-    name: document.getElementById('name').value.trim(),
-    dob: document.getElementById('dob').value.trim(),
-    gender: document.getElementById('gender').value,
-    answers
-  }
-  const res = await fetch('/api/assess', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-  if(!res.ok){
-    const txt = await res.text()
-    alert('Error: '+txt)
-    return
-  }
-  const data = await res.json()
-  showResult(data)
-}
-
-function showResult(data){
-  document.getElementById('rname').innerText = data.name || ''
-  document.getElementById('ptype').innerText = data.pcode || ''
-  document.getElementById('conf').innerText = data.confidence || ''
-  document.getElementById('career').innerText = data.career || ''
-  testDiv.classList.add('hidden')
-  document.getElementById('result').classList.remove('hidden')
-  if(data.pdf){
-    const pdfBytes = atob(data.pdf)
-    const len = pdfBytes.length
-    const u8 = new Uint8Array(len)
-    for (let i = 0; i < len; i++) {
-      u8[i] = pdfBytes.charCodeAt(i)
-    }
-    const blob = new Blob([u8], { type: 'application/pdf' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = data.pdf_filename || 'MBTI_Report.pdf'
-    link.innerText = 'Download PDF report'
-    link.style.display = 'inline-block'
-    link.style.marginTop = '10px'
-    document.getElementById('result').appendChild(link)
-  }
-  if(data.serial){
-    const s = document.createElement('div')
-    s.innerText = 'Report Serial: ' + data.serial
-    s.style.marginTop = '8px'
-    document.getElementById('result').appendChild(s)
-  }
-  if(data.report_url){
-    const rlink = document.createElement('a')
-    rlink.href = data.report_url
-    rlink.innerText = 'Open report (via QR/link)'
-    rlink.target = '_blank'
-    rlink.style.display = 'inline-block'
-    rlink.style.marginLeft = '12px'
-    document.getElementById('result').appendChild(rlink)
-  }
-}
-
-document.querySelectorAll('.lang-btn').forEach(b=>{
-        b.addEventListener('click', ()=>{
-        const lang = b.getAttribute('data-lang')
-        localStorage.setItem('mbti_lang', lang)
-          // go back to home
-        window.location.href = '/'
-        })
-    })
-
-// ================== FEEDBACK PAGE FORM ==================
-//const feedbackForm = document.getElementById("feedbackForm");
-//const feedbackStatus = document.getElementById("feedbackStatus");
-
-//if (feedbackForm) {
-  //feedbackForm.addEventListener("submit", function (e) {
-    //e.preventDefault();
-
-    //feedbackStatus.innerText = "✅ Thanks! Feedback submitted successfully.";
-    //feedbackForm.reset();
-  //});
-//}
-
-// ================== FEEDBACK PAGE FORM ==================
-
-const feedbackForm = document.getElementById("feedbackForm");
-const feedbackStatus = document.getElementById("feedbackStatus");
+const feedbackForm = document.getElementById('feedbackForm')
+const feedbackStatus = document.getElementById('feedbackStatus')
 
 if (feedbackForm) {
-  feedbackForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    if (feedbackStatus) feedbackStatus.innerText = "Submitting...";
-
+  feedbackForm.addEventListener('submit', function (e) {
+    e.preventDefault()
+    if (feedbackStatus) feedbackStatus.innerText = 'Submitting...'
     setTimeout(() => {
-      window.location.href = "/thankyou";
-    }, 600);
-  });
+      window.location.href = '/thankyou'
+    }, 600)
+  })
 }

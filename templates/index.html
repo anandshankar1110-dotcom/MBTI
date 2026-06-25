@@ -27,51 +27,86 @@
     <main>
       <section class="hero">
         <div class="hero-inner">
-          <div>
-            <h1>Discover Your MBTI Personality</h1>
+          <div class="hero-left">
+            <h1 class="hero-title">Discover Your
+              <span class="gradient-text">MBTI Personality</span>
+            </h1>
             <p class="lead">Quick, friendly and private — get a concise MBTI-style report with career suggestions and a downloadable PDF.</p>
             <div class="hero-cta">
-              <a class="btn primary" href="#intro-form">Start Now</a>
+              <a class="btn primary" href="#intro-form">Start Your Test</a>
               <a class="btn ghost" href="#language">Choose Language</a>
             </div>
+
+            <div class="hero-features">
+              <div class="feature">100% Private<br/><small>Your data is secure and never shared.</small></div>
+              <div class="feature">Insightful Results<br/><small>Detailed insights and career suggestions.</small></div>
+              <div class="feature">Download PDF<br/><small>Save your full report and access anytime.</small></div>
+            </div>
           </div>
-          <div class="hero-illustration" aria-hidden="true">
-            <!-- subtle circle illustration -->
-            <svg width="220" height="140" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="110" cy="70" r="70" fill="#e6f7ff" />
-            </svg>
+
+          <div class="hero-right" aria-hidden="true">
+            <div class="hero-visual">
+              <img src="/static/img/hero-illustration.svg" alt="illustration" onerror="this.onerror=null;this.src='/static/anand.jpg'"/>
+              <div class="bubble-type">INTJ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-form-wrap">
+          <div class="container main-card">
+            <div id="about" class="mbti-info">
+              The Myers-Briggs Type Indicator (MBTI) is a personality framework that categorizes individuals into 16 types based on preferences in four dimensions: Extraversion–Introversion, Sensing–Intuition, Thinking–Feeling, and Judging–Perceiving. It helps people understand their natural strengths, communication styles, decision-making approaches, and work preferences.
+            </div>
+
+            <section id="intro-form" class="card card-form">
+              <div class="form-panel">
+                <div class="form-left">
+                  <h3>Let's Get Started 👋</h3>
+                  <p>Please fill in your details to begin your personality journey.</p>
+                  <form id="startForm">
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input id="name" name="name" type="text" placeholder="Enter your full name" />
+                      </div>
+                      <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input id="dob" name="dob" type="text" placeholder="DD-MM-YYYY" />
+                      </div>
+                      <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                          <option value="">Select your gender</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                          <option>Other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <button id="startBtn" type="button" class="btn primary">Start Test</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="form-right">
+                  <div class="feature-cards">
+                    <div class="card small">100% Private<br/><small>Your data is secure and never shared.</small></div>
+                    <div class="card small">Insightful Results<br/><small>Get detailed insights and career suggestions.</small></div>
+                    <div class="card small">Download PDF<br/><small>Save your full report and access anytime.</small></div>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </section>
-
-      <div class="container main-card">
-        <div id="about" class="mbti-info">
-          The Myers-Briggs Type Indicator (MBTI) is a personality framework that categorizes individuals into 16 types based on preferences in four dimensions: Extraversion–Introversion, Sensing–Intuition, Thinking–Feeling, and Judging–Perceiving. It helps people understand their natural strengths, communication styles, decision-making approaches, and work preferences.
-        </div>
-
-        <section id="intro-form" class="card card-form">
-          <h2>Start the Test</h2>
-          <label>Name: <input id="name" type="text" /></label>
-          <label>DOB (DD-MM-YYYY): <input id="dob" type="text" placeholder="01-01-2000" /></label>
-          <label>Gender: 
-            <select id="gender">
-              <option value="">Select</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </label>
-          <div class="form-actions">
-            <button id="startBtn" class="btn primary">Start Test</button>
-          </div>
-        </section>
 
         <section id="test" class="card hidden">
           <div id="progress">Question <span id="qnum">0</span> / <span id="total">0</span></div>
           <div id="questionBox"></div>
           <div class="choices">
-            <button id="btnA">A</button>
-            <button id="btnB">B</button>
+            <button id="btnA" type="button">A</button>
+            <button id="btnB" type="button">B</button>
           </div>
         </section>
 
@@ -81,6 +116,7 @@
           <p><strong>Personality Type:</strong> <span id="ptype"></span></p>
           <p><strong>Confidence:</strong> <span id="conf"></span>%</p>
           <p><strong>Suggested Careers:</strong> <span id="career"></span></p>
+          <div id="resultLinks"></div>
         </section>
       </div>
 
@@ -89,7 +125,7 @@
     <script id="questions-data" type="application/json">
       {{ questions|tojson }}
     </script>
-    <!--<script src="/static/js/main.js"></script>-->
+    <script src="/static/js/main.js"></script>
     <script>
       // hide text label when logo image loads, keep text if image missing
       (function(){
@@ -134,8 +170,6 @@
     <div style="margin-top: 15px;">
     <a href="/feedback" class="btn primary">Feedback</a>
     </div>
-
-    <script src="/static/js/main.js"></script>
 
   </div>
 </section>
